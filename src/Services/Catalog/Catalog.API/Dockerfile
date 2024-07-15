@@ -9,10 +9,11 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Catalog.API/Catalog.API.csproj", "Catalog.API/"]
-RUN dotnet restore "./Catalog.API/Catalog.API.csproj"
+COPY ["Services/Catalog/Catalog.API.csproj", "Services/Catalog/"]
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
+RUN dotnet restore "./Services/Catalog/Catalog.API.csproj"
 COPY . .
-WORKDIR "/src/Catalog.API"
+WORKDIR "/src/Services/Catalog"
 RUN dotnet build "./Catalog.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
